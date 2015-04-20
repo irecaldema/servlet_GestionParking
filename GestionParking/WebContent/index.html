@@ -8,7 +8,7 @@
 <body>
 <h1 align="center">gestion del parking</h1>
 <div align="center">
-<!--boton-->
+<!--boton mostrar vehiculos-->
 <div class="divspoiler">
 <input type="button" value="mostrar vehiculos estacionados" onclick="if (this.parentNode.nextSibling.childNodes[0].style.display != '') { this.parentNode.nextSibling.childNodes[0].style.display = ''; this.value = 'Ocultar'; } else { this.parentNode.nextSibling.childNodes[0].style.display = 'none'; this.value = 'mostrar vehiculos estacionados'; }">
 </div><div><div class="spoiler" style="display: none;">
@@ -19,7 +19,17 @@
 </div></div>
 <!--boton cerrado-->
 <br/>
-<button>buscar vehiculo estacionado</button>
+<!--boton busqueda por matricula-->
+<div class="divspoiler">
+<input type="button" value="buesqueda por matrucila" onclick="if (this.parentNode.nextSibling.childNodes[0].style.display != '') { this.parentNode.nextSibling.childNodes[0].style.display = ''; this.value = 'Ocultar busqueda'; } else { this.parentNode.nextSibling.childNodes[0].style.display = 'none'; this.value = 'busqueda por matricula'; }">
+</div><div><div class="spoiler" style="display: none;">
+<form name="busqueda_matrucula" method="post" onsubmit="return validacion_matricula()" action="GestionParking"> 
+	<b>Busqueda por matricula</b>
+   	<input name="matricula1" type="text"  value="matricula (4 numeros 3 letras)"></input>
+    <input type="submit" id="submit" value="buscar">
+</form>
+</div></div>
+<!--boton cerrado-->
 <br/>
 <button>modificar vehiculo estacionado</button>
 <br/>
@@ -27,17 +37,25 @@
 <br/>
 <button>borrar vehiculo estacionado</button>
 <br/>
-</div>
-<form id="mostrar" method="post" action="ComprobacionUsuario">
-    
-    <fieldset id="inputs">
-        <input id="usuario" name="usuario" type="text" placeholder="Username" autofocus required>   
-        <input id="contrasena" name="contrasena" type="password" placeholder="Password" required>
-    </fieldset>
-    <fieldset id="actions">
-        <input type="submit" id="submit" value="Log in">
-        <a href="">Forgot your password?</a><a href="">Register</a>
-    </fieldset>
-</form>
+<script type="text/javascript">
+function validacion_matricula(){
+	
+	var x = document.forms["busqueda_matrucula"]["matricula1"].value;
+    if (x == null || x == "") {
+        alert("Escribe la matricula");
+        return false;
+    }else if(x.lenght!=7){
+        alert("No has introducido una matricula valida (num caracteres)");
+        return false;
+    }else{
+    	y=
+    	if (typeof y=="number")&&(typeof z=="string"){
+    		return true;
+    	}
+    }
+	
+}
+</script>
+
 </body>
 </html>
