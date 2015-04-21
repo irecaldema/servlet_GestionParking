@@ -18,7 +18,7 @@
 <div class="divspoiler">
 <input type="button" value="busqueda por matrucila" onclick="if (this.parentNode.nextSibling.childNodes[0].style.display != '') { this.parentNode.nextSibling.childNodes[0].style.display = ''; this.value = 'Ocultar busqueda'; } else { this.parentNode.nextSibling.childNodes[0].style.display = 'none'; this.value = 'busqueda por matricula'; }">
 </div><div><div class="spoiler" style="display: none;">
-<form name="busqueda_matrucula" method="post" onsubmit="return validacion_matricula()" action="GestionParking"> 
+<form name="busqueda_matrucula" method="post" onsubmit="return validacion_busqueda_matricula()" action="GestionParking"> 
 	Busqueda por matricula
    	<input name="matricula" type="text"  value="matricula (4 numeros 3 letras)"></input>
     <input type="submit" id="submit" value="buscar">
@@ -30,7 +30,7 @@
 <div class="divspoiler">
 <input type="button" value="modificar vehiculo estacionado" onclick="if (this.parentNode.nextSibling.childNodes[0].style.display != '') { this.parentNode.nextSibling.childNodes[0].style.display = ''; this.value = 'Ocultar modificar'; } else { this.parentNode.nextSibling.childNodes[0].style.display = 'none'; this.value = 'modificar vehiculo estacionado'; }">
 </div><div><div class="spoiler" style="display: none;">
-<form name="modificar_vehiculo" method="post" onsubmit="return validacion_matricula()" action="GestionParking"> 
+<form name="modificar_vehiculo" method="post" onsubmit="return validacion_modificar_matricula()" action="GestionParking"> 
 	Matricula de vehiculo a modificar
    	<input name="matricula" type="text"  value="matricula (4 numeros 3 letras)"></input>
     <input type="submit" id="submit" value="buscar">
@@ -42,7 +42,7 @@
 <div class="divspoiler">
 <input type="button" value="anadir vehiculo estacionado" onclick="if (this.parentNode.nextSibling.childNodes[0].style.display != '') { this.parentNode.nextSibling.childNodes[0].style.display = ''; this.value = 'Ocultar anadir vehiculo'; } else { this.parentNode.nextSibling.childNodes[0].style.display = 'none'; this.value = 'anadir vehiculo estacionado'; }">
 </div><div><div class="spoiler" style="display: none;">
-<form name="anadir_vehiculo" method="post" onsubmit="return validacion_matricula()" action="GestionParking"> 
+<form name="anadir_vehiculo" method="post" onsubmit="return validacion_anadir_matricula()" action="GestionParking"> 
 	Formulario de anadir vehiculo<br/>
 	<!-- int numRuedas, boolean motor, String marca, String matricula, boolean automatico, int consumo100km -->
    	matricula:
@@ -68,7 +68,7 @@
 <div class="divspoiler">
 <input type="button" value="borrar vehiculo estacionado" onclick="if (this.parentNode.nextSibling.childNodes[0].style.display != '') { this.parentNode.nextSibling.childNodes[0].style.display = ''; this.value = 'Ocultar borrar vehiculo'; } else { this.parentNode.nextSibling.childNodes[0].style.display = 'none'; this.value = 'borrar vehiculo estacionado'; }">
 </div><div><div class="spoiler" style="display: none;">
-<form name="busqueda_matrucula" method="post" onsubmit="return validacion_matricula()" action="GestionParking"> 
+<form name="borrar_vehiculo" method="post" onsubmit="return validacion_borrar_matricula()" action="GestionParking"> 
 	<b>Matricula del vehiculo a borrar</b>
    	<input name="matricula1" type="text"  value="matricula (4 numeros 3 letras)"></input>
     <input type="submit" id="submit" value="buscar">
@@ -78,29 +78,66 @@
 </div><!-- align center -->
 <br/>
 <script type="text/javascript">
-function validacion_matricula(){
-	
+function validacion_busqueda_matricula(){
+	console.log("000");
 	var x = document.forms["busqueda_matrucula"]["matricula"].value;
-	var y = document.forms["modificar_vehiculo"]["matricula"].value;
-	var z = document.forms["anadir_vehiculo"]["matricula"].value;
+	if(validar_matricula(x)){
+		console.log("final de validacion ok");
+		return true;
+	}else{
+		console.log("final de validacion error");
+		return false;
+	};	
+	
+}
+function validacion_modificar_vehiculo(){	
+	var x = document.forms["modificar_vehiculo"]["matricula"].value;
+	if(validar_matricula(x)){
+		return true;
+	}else{
+		return false;
+	};	
+}
+
+function validacion_anadir_vehiculo(){
+	var x = document.forms["anadir_vehiculo"]["matricula"].value;
+	if(validar_matricula(x)){
+		return true;
+	}else{
+		return false;
+	};		
+}
+
+function validacion_borrar_vehiculo(){
+	var x = document.forms["borrar_vehiculo"]["matricula"].value;
+	if(validar_matricula(x)){
+		return true;
+	}else{
+		return false;
+	};		
+}
+
+function validar_matricula(x){
     if (x == null || x == "") {
         alert("Escribe la matricula");
+        console.log("comprovacion nulo");
         return false;
     }else if(x.lenght!=7){
         alert("No has introducido una matricula valida (num caracteres)");
+        console.log("bbb");
         return false;
     }else{
-    	for(var i=0;i<x.lenght;i++){
-    		y=;
-    		m.test(x);
-	    	if (y.test(x)){
-	    		return true;
-	    	}else{
-	    		return false;
-	    	}
-    	}	
+    	var expreg = /^[0-9]{4}[A-Z,a-z]{3}$/;
+    	if (expreg.test(x)){
+    		alert("La matricula es correcta");
+    		console.log("correcto");
+    		return true;
+    	}else{
+    		alert("La matricula NO es correcta");
+    		console.log("ccc");
+    		return false;
+    	}
     }
-	
 }
 </script>
 
