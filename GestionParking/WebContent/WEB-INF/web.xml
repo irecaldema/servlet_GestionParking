@@ -10,23 +10,11 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
-    <description>gestion del parking</description>
-    <display-name>GestionParking</display-name>
     <servlet-name>GestionParking</servlet-name>
-    <servlet-class>com.zubiri.Parking.GestionParking</servlet-class>
+    	<servlet-class>GestorParking</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>GestionParking</servlet-name>
-    <url-pattern>/GestionParking</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>GestiorParking</display-name>
-    <servlet-name>GestiorParking</servlet-name>
-    <servlet-class>GestiorParking</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>GestiorParking</servlet-name>
-    <url-pattern>/GestiorParking</url-pattern>
+	    <servlet-name>GestionParking</servlet-name>
+	    <url-pattern>/Gestor</url-pattern>
   </servlet-mapping>
 </web-app>

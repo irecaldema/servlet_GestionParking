@@ -3,6 +3,9 @@ package com.zubiri.parking;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class ParkingVehiculos {
 	
@@ -79,18 +82,20 @@ public class ParkingVehiculos {
 	}
 	
 	// Buscar
-	public static void buscarVehiculo(String matricula) {
+	public static Vehiculo buscarVehiculo(String matricula) {
 		int i;
-		
+		int posicion=-1;
 		for(i =0; i<vehiculos.size(); i++) {
 			if (vehiculos.get(i).getMatricula().equalsIgnoreCase(matricula)) {
-				System.out.println(vehiculos.get(i).formatted());
+				//System.out.println(vehiculos.get(i).formatted());
+				posicion=i;
 				break;
 			}
 		}
 		if (i == vehiculos.size()) {
 			System.out.println("No se ha encontrado la matricula");
 		}
+		return vehiculos.get(posicion);
 	}
 	
 	// Modificar
@@ -134,5 +139,45 @@ public class ParkingVehiculos {
 		}
 
 		return parkingStr;
+	}
+	
+	public static void leerVehiculos() {
+		
+		// Leer "clientes.txt"
+		try {
+			
+			BufferedReader br2 = new BufferedReader(new FileReader("ficheros/vehiculos.txt"));
+
+			String linea2 = br2.readLine();
+
+			// Creamos un array de tipo String para separar los campos del fichero
+			String [] camposSeparados2 = null;
+
+			while (linea2 != null) {
+
+				// Creamos los objetos que participan en el fichero "vehiculos.txt"
+				Coche coche = new Coche();
+
+				// Separamos las lineas obtenidas (linea2) mediante ", " y lo guardamos en "camposSeparados2"
+				camposSeparados2 = linea2.split(", ");
+
+				// Introducimos los valores capturados del fichero en los objetos creados
+				coche.setNumRuedas(Integer.parseInt(camposSeparados2[0]));
+				coche.setMotor(Boolean.parseBoolean(camposSeparados2[1]));
+				coche.setMarca(camposSeparados2[2]);
+				coche.setMatricula(camposSeparados2[3]);
+				coche.setAutomatico(Boolean.parseBoolean(camposSeparados2[4]));
+				coche.setConsumo100km(Integer.parseInt(camposSeparados2[5]));
+
+				// Añadimos el objeto "cliente" al ArrayList "arrayCliente"
+				vehiculos.add(coche);
+
+				linea2 = br2.readLine();
+			}
+			br2.close();
+			
+		} catch(IOException e) {
+			System.out.println("Error E/S: "+e);
+		}
 	}
 }
