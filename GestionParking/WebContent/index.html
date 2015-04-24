@@ -44,7 +44,7 @@
 <div class="divspoiler">
 <input type="button" value="anadir vehiculo estacionado" onclick="if (this.parentNode.nextSibling.childNodes[0].style.display != '') { this.parentNode.nextSibling.childNodes[0].style.display = ''; this.value = 'Ocultar anadir vehiculo'; } else { this.parentNode.nextSibling.childNodes[0].style.display = 'none'; this.value = 'anadir vehiculo estacionado'; }">
 </div><div><div class="spoiler" style="display: none;">
-<form name="anyadir_vehiculo" method="post" onsubmit="return validacion_anadir_matricula()" action="Gestor"> 
+<form name="anyadir_vehiculo" method="post" onsubmit="return validacion_anadir_vehiculo()" action="Gestor"> 
 	<input name="gestion" hidden="true" type="text"  value="anyadir_vehiculo"/>
 	Formulario de anadir vehiculo<br/>
 	<!-- int numRuedas, boolean motor, String marca, String matricula, boolean automatico, int consumo100km -->
@@ -72,11 +72,11 @@
 <div class="divspoiler">
 <input type="button" value="borrar vehiculo estacionado" onclick="if (this.parentNode.nextSibling.childNodes[0].style.display != '') { this.parentNode.nextSibling.childNodes[0].style.display = ''; this.value = 'Ocultar borrar vehiculo'; } else { this.parentNode.nextSibling.childNodes[0].style.display = 'none'; this.value = 'borrar vehiculo estacionado'; }">
 </div><div><div class="spoiler" style="display: none;">
-<form name="borrar_vehiculo" method="post" onsubmit="return validacion_borrar_matricula()" action="Gestor"> 
+<form name="borrar_vehiculo" method="post" onsubmit="return validacion_borrar_vehiculo()" action="Gestor"> 
 	<input name="gestion" hidden="true" type="text"  value="borrar_vehiculo"/>
 	<b>Matricula del vehiculo a borrar</b>
-   	<input name="matricula1" type="text"  value="matricula (4 numeros 3 letras)"></input>
-    <input type="submit" id="submit" value="buscar">
+   	<input name="matricula" type="text"  value="matricula (4 numeros 3 letras)"></input>
+    <input type="submit" id="submit" value="borrar">
 </form>
 </div></div>
 <!--boton cerrado-->

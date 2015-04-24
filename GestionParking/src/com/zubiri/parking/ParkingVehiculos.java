@@ -1,11 +1,15 @@
 package com.zubiri.parking;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 public class ParkingVehiculos {
 	
@@ -82,12 +86,25 @@ public class ParkingVehiculos {
 	}
 	
 	// Buscar
+	public static void buscarVehiculoVoid(String matricula) {
+		int i;
+		
+		for(i =0; i<vehiculos.size(); i++) {
+			if (vehiculos.get(i).getMatricula().equalsIgnoreCase(matricula)) {
+				System.out.println(vehiculos.get(i).formatted());
+				break;
+			}
+		}
+		if (i == vehiculos.size()) {
+			System.out.println("No se ha encontrado la matricula");
+		}
+	}
+	
 	public static Vehiculo buscarVehiculo(String matricula) {
 		int i;
 		int posicion=-1;
 		for(i =0; i<vehiculos.size(); i++) {
 			if (vehiculos.get(i).getMatricula().equalsIgnoreCase(matricula)) {
-				//System.out.println(vehiculos.get(i).formatted());
 				posicion=i;
 				break;
 			}
@@ -127,11 +144,10 @@ public class ParkingVehiculos {
 		for (int i=0; i<getVehiculos().size(); i++) {
 			Vehiculo vehi = getVehiculos().get(i);
 			vehi.mostrarVehiculo();
-			System.out.println();
 		}
 	}
 	
-	public String formattedParkingVehiculos() {
+	public static String formattedParkingVehiculos() {
 		String parkingStr = "";
 		
 		for (int i = 0; i < vehiculos.size(); i++) {
@@ -141,35 +157,30 @@ public class ParkingVehiculos {
 		return parkingStr;
 	}
 	
-	public static void leerVehiculos() {
-		
-		// Leer "clientes.txt"
+	
+	// Ficheros
+	public static final void leerVehiculos() {
+		// Leer "vehiculos.txt"
 		try {
-			
-			BufferedReader br2 = new BufferedReader(new FileReader("ficheros/vehiculos.txt"));
-
+			//BufferedReader br2 = new BufferedReader(new FileReader("../../../../WebContent/ficheros/vehiculos.txt"));
+			//BufferedReader br2 = new BufferedReader(new FileReader("~/ProyectosJava/GestionParking/WebContent/ficheros/vehiculos.txt"));
+			BufferedReader br2 = new BufferedReader(new FileReader("/home/zubiri/ProyectosJava/GestionParking/WebContent/ficheros/vehiculos.txt"));
 			String linea2 = br2.readLine();
-
-			// Creamos un array de tipo String para separar los campos del fichero
 			String [] camposSeparados2 = null;
 
 			while (linea2 != null) {
 
-				// Creamos los objetos que participan en el fichero "vehiculos.txt"
 				Coche coche = new Coche();
 
-				// Separamos las lineas obtenidas (linea2) mediante ", " y lo guardamos en "camposSeparados2"
 				camposSeparados2 = linea2.split(", ");
 
-				// Introducimos los valores capturados del fichero en los objetos creados
 				coche.setNumRuedas(Integer.parseInt(camposSeparados2[0]));
 				coche.setMotor(Boolean.parseBoolean(camposSeparados2[1]));
 				coche.setMarca(camposSeparados2[2]);
 				coche.setMatricula(camposSeparados2[3]);
 				coche.setAutomatico(Boolean.parseBoolean(camposSeparados2[4]));
 				coche.setConsumo100km(Integer.parseInt(camposSeparados2[5]));
-
-				// Añadimos el objeto "cliente" al ArrayList "arrayCliente"
+				
 				vehiculos.add(coche);
 
 				linea2 = br2.readLine();
@@ -178,6 +189,175 @@ public class ParkingVehiculos {
 			
 		} catch(IOException e) {
 			System.out.println("Error E/S: "+e);
+		}
+	}
+	
+	public static final ArrayList<Vehiculo> leerVehiculos2() {
+		// Leer "vehiculos.txt"
+		try {
+			BufferedReader br2 = new BufferedReader(new FileReader("ficheros/vehiculos.txt"));
+
+			String linea2 = br2.readLine();
+			String [] camposSeparados2 = null;
+
+			while (linea2 != null) {
+
+				Coche coche = new Coche();
+
+				camposSeparados2 = linea2.split(", ");
+
+				coche.setNumRuedas(Integer.parseInt(camposSeparados2[0]));
+				coche.setMotor(Boolean.parseBoolean(camposSeparados2[1]));
+				coche.setMarca(camposSeparados2[2]);
+				coche.setMatricula(camposSeparados2[3]);
+				coche.setAutomatico(Boolean.parseBoolean(camposSeparados2[4]));
+				coche.setConsumo100km(Integer.parseInt(camposSeparados2[5]));
+				
+				vehiculos.add(coche);
+
+				linea2 = br2.readLine();
+			}
+			br2.close();
+			
+		} catch(IOException e) {
+			System.out.println("Error E/S: "+e);
+		}
+		
+		return vehiculos;
+	}
+	
+	public final static void anyadirVehiculosFichero(Coche vehiculo) throws IOException {		
+		anyadirVehiculo(vehiculo);
+		File TextFile = new File("/home/zubiri/ProyectosJava/GestionParking/WebContent/ficheros/vehiculos.txt"); 
+		FileWriter TextOut = new FileWriter(TextFile, true);
+		
+		TextOut.write(vehiculo.getNumRuedas() + ", ");
+		if (vehiculo.isMotor()) {
+			TextOut.write("true" + ", ");
+		} else {
+			TextOut.write("false" + ", ");
+		}
+		TextOut.write(vehiculo.getMarca() + ", ");
+		TextOut.write(vehiculo.getMatricula() + ", ");
+		if (vehiculo.isAutomatico()) {
+			TextOut.write("true" + ", ");
+		} else {
+			TextOut.write("false, ");
+		}
+		TextOut.write(vehiculo.getConsumo100km() + "\n");
+		TextOut.close();
+	}
+	
+	public final static void borrarVehiculosFichero(String matricula) throws IOException {		
+		try {
+			String line1 = "";
+			
+			String file = "/home/zubiri/ProyectosJava/java2_ParkingVehiculos/ficheros/vehiculos.txt";
+			File inFile = new File(file);
+			
+			if (!inFile.isFile()) {
+				System.out.println("No existe el fichero");
+				return;
+			}
+			
+			//Construct the new file that will later be renamed to the original filename. 
+			File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
+
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+			//Read from the original file and write to the new 
+			//unless content matches data to be removed.
+			while ((line1 = br.readLine()) != null) {
+				if(line1.indexOf(matricula)!= -1) {
+					// Sólo escribiría la línea de la matrícula encontrada
+					System.out.println("no existe el vehiculo");
+					//pw.println(line1);
+					//pw.flush();
+				} else {
+					System.out.println("vehiculo encontrado, borrando");
+					// Esto escribe en el fichero
+					pw.println(line1);
+					pw.flush();
+				}
+			}
+			pw.close();
+			br.close();
+					   
+			//Delete the original file
+			if (!inFile.delete()) {
+				System.out.println("Could not delete file");
+				return;
+			}
+			
+			//Rename the new file to the filename the original file had.
+			if (!tempFile.renameTo(inFile)) {
+				System.out.println("Could not rename file");
+			}
+		} catch (FileNotFoundException e) {
+				e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public final static void modificarVehiculosFichero(String matricula) throws IOException {		
+		try {
+			String line1 = "";
+			
+			String file = "/home/zubiri/ProyectosJava/java2_ParkingVehiculos/ficheros/vehiculos.txt";
+			File inFile = new File(file);
+			
+			if (!inFile.isFile()) {
+				System.out.println("No existe el fichero");
+				return;
+			}
+			
+			//Construct the new file that will later be renamed to the original filename. 
+			File tempFile = new File(inFile.getAbsolutePath() + ".tmp");
+
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+			//Read from the original file and write to the new 
+			//unless content matches data to be removed.
+			
+			int cantMatricula = 1;
+			
+			while ((line1 = br.readLine()) != null) {
+				if(line1.indexOf(matricula)!= -1) {
+					// Sólo escribiría la línea de la matrícula encontrada
+					//pw.println(line1);
+					//pw.flush();
+				} else {
+					// Esto escribe en el fichero
+					
+					if (cantMatricula == 1) {
+						Scanner sc2 = new Scanner(System.in);
+						Coche coche = new Coche(sc2);
+						anyadirVehiculosFichero(coche);
+						cantMatricula++;
+					}
+					
+					pw.println(line1);
+					pw.flush();
+				}
+			}
+			pw.close();
+			br.close();
+					   
+			//Delete the original file
+			if (!inFile.delete()) {
+				System.out.println("Could not delete file");
+				return;
+			}
+			
+			//Rename the new file to the filename the original file had.
+			if (!tempFile.renameTo(inFile)) {
+				System.out.println("Could not rename file");
+			}
+		} catch (FileNotFoundException e) {
+				e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

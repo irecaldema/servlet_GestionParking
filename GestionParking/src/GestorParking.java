@@ -45,9 +45,10 @@ public class GestorParking extends HttpServlet {
 		// TODO Auto-generated method stub
 		if (ParkingVehiculos.getVehiculos().size()==0){
 			//lectura del archivo
-		ParkingVehiculos.anyadirVehiculo(new Coche(4,true,"marca_prueba","0000AAA",true,50));
-		ParkingVehiculos.anyadirVehiculo(new Coche(4,true,"ferrari","0001ABA",true,100));
-		ParkingVehiculos.anyadirVehiculo(new Coche(4,true,"fiat","0002ACA",true,10));
+		ParkingVehiculos.leerVehiculos();
+		//ParkingVehiculos.anyadirVehiculo(new Coche(4,true,"marca_prueba","0000AAA",true,50));
+		//ParkingVehiculos.anyadirVehiculo(new Coche(4,true,"ferrari","0001ABA",true,100));
+		//ParkingVehiculos.anyadirVehiculo(new Coche(4,true,"fiat","0002ACA",true,10));
 		}
 		String gestion=request.getParameter("gestion");
 		System.out.println(gestion);
@@ -73,15 +74,19 @@ public class GestorParking extends HttpServlet {
 			boolean automatico = Boolean.parseBoolean(request.getParameter("automatico"));
 			int consumo = Integer.parseInt(request.getParameter("consumo"));	
 			System.out.println("new coche");
-			Vehiculo nuevo = new Coche(n_ruedas,motor,marca,matricula,automatico,consumo);
-			ParkingVehiculos.anyadirVehiculo(nuevo);
+			Coche nuevo = new Coche(n_ruedas,motor,marca,matricula,automatico,consumo);
+			ParkingVehiculos.anyadirVehiculosFichero(nuevo);
 			if(ParkingVehiculos.buscarVehiculo(matricula)==nuevo){
 				response(response, "vehiculo anyadido");
 			}else{
 				response(response, "error al anyadir vehiculo");
 			}
 		}else if(gestion.equals("borrar_vehiculo")){
-
+			System.out.println("borrando");
+			String matricula = request.getParameter("matricula");
+			ParkingVehiculos.borrarVehiculosFichero(matricula);
+			ParkingVehiculos.borrarVehiculo(matricula);
+			response(response, "Se ha borrado el vehiculo");
 		}else if(gestion.equals("modificar_vehiculo")){
 
 		}
