@@ -1,0 +1,4 @@
+4, true, Reanult, 0000AAA, true, 50
+4, true, ferrari, 2222CCC, true, 554
+4, false, prueba, 0001ABA, false, 150
+4, false, marca, 6666BBB, false, 150
