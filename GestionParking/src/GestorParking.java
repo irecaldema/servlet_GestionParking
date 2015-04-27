@@ -87,8 +87,31 @@ public class GestorParking extends HttpServlet {
 			ParkingVehiculos.borrarVehiculosFichero(matricula);
 			ParkingVehiculos.borrarVehiculo(matricula);
 			response(response, "Se ha borrado el vehiculo");
-		}else if(gestion.equals("modificar_vehiculo")){
-
+		}else if (gestion.equals("modificar_vehiculo")) {
+			System.out.println("Empieza modificando");
+			int n_ruedas = Integer.parseInt(request.getParameter("numruedas"));
+			boolean motor = Boolean.parseBoolean(request.getParameter("motor"));
+			String marca = request.getParameter("marca");
+			String matriculanueva = request.getParameter("matriculanueva");
+			String matriculavieja = request.getParameter("matriculavieja");
+			boolean automatico = Boolean.parseBoolean(request.getParameter("automatico"));
+			int consumo = Integer.parseInt(request.getParameter("consumo"));
+			
+			try {
+				if (ParkingVehiculos.buscarVehiculo(matriculavieja) != null) {
+					try {
+						if (ParkingVehiculos.buscarVehiculo(matriculanueva) != null) {
+							response(response, "La matricula introducida ya existe");
+						}
+					} catch (ArrayIndexOutOfBoundsException e) {
+						ParkingVehiculos.modificarVehiculosFicheroServlet(matriculavieja, matriculanueva, marca, n_ruedas, motor, automatico, consumo);
+						System.out.println("Vehículo modificado");
+						response(response, "Vehículo modificado");
+					}
+				}
+			} catch (ArrayIndexOutOfBoundsException e) {
+				response(response, "No se encontró el vehículo");
+			}
 		}
 		//ParkingVehiculos pv = new ParkingVehiculos();
 		//response(response,"prueba");
