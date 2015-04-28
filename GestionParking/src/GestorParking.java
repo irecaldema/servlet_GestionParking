@@ -76,6 +76,7 @@ public class GestorParking extends HttpServlet {
 			System.out.println("new coche");
 			Coche nuevo = new Coche(n_ruedas,motor,marca,matricula,automatico,consumo);
 			ParkingVehiculos.anyadirVehiculosFichero(nuevo);
+			ParkingVehiculos.anyadirCoche(nuevo);
 			if(ParkingVehiculos.buscarVehiculo(matricula)==nuevo){
 				response(response, "vehiculo anyadido");
 			}else{
