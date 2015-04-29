@@ -85,9 +85,19 @@ public class GestorParking extends HttpServlet {
 		}else if(gestion.equals("borrar_vehiculo")){
 			System.out.println("borrando");
 			String matricula = request.getParameter("matricula");
-			ParkingVehiculos.borrarVehiculosFichero(matricula);
-			ParkingVehiculos.borrarVehiculo(matricula);
-			response(response, "Se ha borrado el vehiculo");
+			Boolean confirmacion = Boolean.parseBoolean(request.getParameter("confirmacion"));
+			if (confirmacion!=true){
+				confirmacion=false;
+			}
+			Vehiculo sentenciado = new Coche();
+			sentenciado=ParkingVehiculos.buscarVehiculo(matricula);
+			response(response, "Seguro que quieres borrar el vehiculo?", sentenciado);
+			if(confirmacion=true){
+				ParkingVehiculos.borrarVehiculosFichero(matricula);
+				ParkingVehiculos.borrarVehiculo(matricula);
+				response(response, "Se ha borrado el vehiculo");
+			}
+
 		}else if (gestion.equals("modificar_vehiculo")) {
 			System.out.println("Empieza modificando");
 			int n_ruedas = Integer.parseInt(request.getParameter("numruedas"));
@@ -133,7 +143,7 @@ public class GestorParking extends HttpServlet {
 			out.println("<a href='index.html'><button/>volver</a>");
 			out.println("</body>");
 			out.println("</html>");
-		}
+	}
 	
 	private void response(HttpServletResponse response,String msg)
 			throws IOException {
@@ -144,7 +154,7 @@ public class GestorParking extends HttpServlet {
 			out.println("<a href='index.html'><button/>volver</a>");
 			out.println("</body>");
 			out.println("</html>");
-		}
+	}
 	
 	private void response(HttpServletResponse response, Vehiculo coche)
 			throws IOException {
@@ -156,6 +166,25 @@ public class GestorParking extends HttpServlet {
 			out.println("<a href='index.html'><button/>volver</a>");
 			out.println("</body>");
 			out.println("</html>");
-		}
+	}
+	
+	private void response(HttpServletResponse response,String msg ,Vehiculo coche)
+			throws IOException {
+			PrintWriter out = response.getWriter();
+			out.println("<html>");
+			out.println("<body>");
+			out.println("<p>"+msg+"</p>");
+			out.println("<p>"+coche.getMarca()+"</p>");
+			out.println("<p>"+coche.getMatricula()+"</p>");
+			out.println("<form name=\"borrar_vehiculo\" method=\"post\" action=\"Gestor\">");
+			out.println("<input name='gestion' hidden='true' type='text'  value='borrar_vehiculo'/>");
+			out.println("<input name=\"matricula\" hidden=\"true\" type=\"text\"  value=coche.getMatricula()></input>");
+			out.println("<input type='submit' id='submit' value='borrar'>");
+			out.println("</form>");
+			out.println("<a href='index.html'><button/>volver</a>");
+			out.println("</body>");
+			out.println("</html>");
+	}
+	
 
 }
