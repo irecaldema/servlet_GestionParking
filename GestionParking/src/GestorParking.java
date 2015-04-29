@@ -104,13 +104,13 @@ public class GestorParking extends HttpServlet {
 				formulario_modificar(response,request.getParameter("matriculavieja"));
 			}else{
 				int n_ruedas = Integer.parseInt(request.getParameter("numruedas"));
-				System.out.println("prueba1 "+n_ruedas);
+				//System.out.println("prueba1 "+n_ruedas);
 				boolean motor = Boolean.parseBoolean(request.getParameter("motor"));
 				String marca = request.getParameter("marca");
 				String matriculanueva = request.getParameter("matriculanueva");
-				System.out.println("prueba2 "+matriculanueva);
+				//System.out.println("prueba2 "+matriculanueva);
 				String matriculavieja = request.getParameter("matriculavieja");
-				System.out.println("prueba3 "+matriculavieja);
+				//System.out.println("prueba3 "+matriculavieja);
 				boolean automatico = Boolean.parseBoolean(request.getParameter("automatico"));
 				int consumo = Integer.parseInt(request.getParameter("consumo"));
 				
@@ -121,6 +121,7 @@ public class GestorParking extends HttpServlet {
 								response(response, "La matricula introducida ya existe");
 							}
 						} catch (ArrayIndexOutOfBoundsException e) {
+							//System.out.println("matricula: "+matriculavieja+" matri nueva: "+matriculanueva+" marca: "+marca+" ruedas: "+n_ruedas+" motor: "+motor+" automa: "+automatico+" consu: "+consumo);
 							ParkingVehiculos.modificarVehiculosFicheroServlet(matriculavieja, matriculanueva, marca, n_ruedas, motor, automatico, consumo);
 							System.out.println("Vehículo modificado");
 							response(response, "Vehículo modificado");

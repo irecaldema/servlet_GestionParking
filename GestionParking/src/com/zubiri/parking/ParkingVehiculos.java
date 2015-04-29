@@ -226,7 +226,7 @@ public class ParkingVehiculos {
 	}
 	
 	public final static void anyadirVehiculosFichero(Coche vehiculo) throws IOException {		
-		File TextFile = new File("ficheros/vehiculos.txt"); 
+		File TextFile = new File("/home/zubiri/ProyectosJava/GestionParking/WebContent/ficheros/vehiculos.txt"); 
 		FileWriter TextOut = new FileWriter(TextFile, true);
 		
 		TextOut.write(vehiculo.getNumRuedas() + ", ");
@@ -300,7 +300,7 @@ public class ParkingVehiculos {
 		try {
 			String line1 = "";
 			
-			String file = "ficheros/vehiculos.txt";
+			String file = "/home/zubiri/ProyectosJava/GestionParking/WebContent/ficheros/vehiculos.txt";
 			File inFile = new File(file);
 			
 			if (!inFile.isFile()) {
@@ -361,7 +361,7 @@ public class ParkingVehiculos {
 		try {
 			String line1 = "";
 			
-			String file = "ficheros/vehiculos.txt";
+			String file = "/home/zubiri/ProyectosJava/GestionParking/WebContent/ficheros/vehiculos.txt";
 			File inFile = new File(file);
 			
 			if (!inFile.isFile()) {
