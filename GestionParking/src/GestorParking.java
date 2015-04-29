@@ -91,36 +91,44 @@ public class GestorParking extends HttpServlet {
 				Vehiculo sentenciado = new Coche();
 				sentenciado=ParkingVehiculos.buscarVehiculo(matricula);
 				response(response, "Seguro que quieres borrar el vehiculo?", sentenciado);
-			}else if(confirmacion==true){
+			}else{
 				ParkingVehiculos.borrarVehiculosFichero(matricula);
 				ParkingVehiculos.borrarVehiculo(matricula);
 				response(response, "Se ha borrado el vehiculo");
 			}
 
-		}else if (gestion.equals("modificar_vehiculo")) {
+		}else if (gestion.equals("modificar_vehiculo")) {			
 			System.out.println("Empieza modificando");
-			int n_ruedas = Integer.parseInt(request.getParameter("numruedas"));
-			boolean motor = Boolean.parseBoolean(request.getParameter("motor"));
-			String marca = request.getParameter("marca");
-			String matriculanueva = request.getParameter("matriculanueva");
-			String matriculavieja = request.getParameter("matriculavieja");
-			boolean automatico = Boolean.parseBoolean(request.getParameter("automatico"));
-			int consumo = Integer.parseInt(request.getParameter("consumo"));
-			
-			try {
-				if (ParkingVehiculos.buscarVehiculo(matriculavieja) != null) {
-					try {
-						if (ParkingVehiculos.buscarVehiculo(matriculanueva) != null) {
-							response(response, "La matricula introducida ya existe");
+			Boolean confirmacion = Boolean.parseBoolean(request.getParameter("confirmacion"));
+			if(confirmacion!=true){
+				formulario_modificar(response,request.getParameter("matriculavieja"));
+			}else{
+				int n_ruedas = Integer.parseInt(request.getParameter("numruedas"));
+				System.out.println("prueba1 "+n_ruedas);
+				boolean motor = Boolean.parseBoolean(request.getParameter("motor"));
+				String marca = request.getParameter("marca");
+				String matriculanueva = request.getParameter("matriculanueva");
+				System.out.println("prueba2 "+matriculanueva);
+				String matriculavieja = request.getParameter("matriculavieja");
+				System.out.println("prueba3 "+matriculavieja);
+				boolean automatico = Boolean.parseBoolean(request.getParameter("automatico"));
+				int consumo = Integer.parseInt(request.getParameter("consumo"));
+				
+				try {
+					if (ParkingVehiculos.buscarVehiculo(matriculavieja) != null) {
+						try {
+							if (ParkingVehiculos.buscarVehiculo(matriculanueva) != null) {
+								response(response, "La matricula introducida ya existe");
+							}
+						} catch (ArrayIndexOutOfBoundsException e) {
+							ParkingVehiculos.modificarVehiculosFicheroServlet(matriculavieja, matriculanueva, marca, n_ruedas, motor, automatico, consumo);
+							System.out.println("Vehículo modificado");
+							response(response, "Vehículo modificado");
 						}
-					} catch (ArrayIndexOutOfBoundsException e) {
-						ParkingVehiculos.modificarVehiculosFicheroServlet(matriculavieja, matriculanueva, marca, n_ruedas, motor, automatico, consumo);
-						System.out.println("Vehículo modificado");
-						response(response, "Vehículo modificado");
 					}
+				} catch (ArrayIndexOutOfBoundsException e) {
+					response(response, "No se encontró el vehículo");
 				}
-			} catch (ArrayIndexOutOfBoundsException e) {
-				response(response, "No se encontró el vehículo");
 			}
 		}
 		//ParkingVehiculos pv = new ParkingVehiculos();
@@ -183,6 +191,57 @@ public class GestorParking extends HttpServlet {
 			out.println("<a href='index.html'><button/>volver</a>");
 			out.println("</body>");
 			out.println("</html>");
+	}
+	
+	private void formulario_modificar(HttpServletResponse response,String matricula)
+			throws IOException {
+		System.out.println("se esta modificando el vehiculo con matricula: "+matricula);
+		Vehiculo vehiculo_viejo = new Coche();
+		vehiculo_viejo=ParkingVehiculos.buscarVehiculo(matricula);
+		
+		if (vehiculo_viejo instanceof Coche){
+			Coche coche_viejo = ( Coche ) vehiculo_viejo;
+			//coche_viejo.getConsumo100km();
+			System.out.println("prueba get matricula: "+coche_viejo.getMatricula());
+		
+		response.setContentType( "text/html; charset=iso-8859-1" );
+		PrintWriter out = response.getWriter();
+		out.println("<html>");
+		out.println("<body>");
+		out.println("<form name='modificar_vehiculo' method='post' action='Gestor'>");
+			out.println("<input name='gestion' hidden='true' type='text' value='modificar_vehiculo'/>");
+			out.println("Matricula a modificar: <input name='matriculavieja' type='text' value='"+coche_viejo.getMatricula()+"' /> <br>");
+			out.println("Nueva matrícula: <input name='matriculanueva' type='text' id='matricula' value='matricula (4 numeros 3 letras)'/> <br>");
+			out.println("Marca: <input name='marca' type='text' id='marca' value='"+coche_viejo.getMarca()+"' /> <br>");
+			out.println("Número de ruedas: <input name='numruedas' type='text' id='numruedas' value='"+coche_viejo.getNumRuedas()+"' /> <br>");
+			out.println("¿Tiene motor?");
+			String motor_si="";
+			String motor_no="";
+			if (coche_viejo.isMotor()) {
+				motor_si="checked";
+			} else {
+				motor_no="checked";
+			}
+			out.println("<input name='motor' type='radio' value='true' "+motor_si+" /> Sí");
+			out.println("<input name='motor' type='radio' value='false' "+motor_no+"/> No <br>");
+			out.println("¿Es automático?");
+			String automatico_si="";
+			String automatico_no="";
+			if (coche_viejo.isAutomatico()) {
+				automatico_si="checked";
+			} else {
+				automatico_no="checked";
+			}
+			out.println("<input name='automatico' type='radio' value='true' "+automatico_si+" /> Sí");
+			out.println("<input name='automatico' type='radio' value='false' "+automatico_no+"/> No <br>");
+			out.println("Consumo en 100km <input name='consumo' type='text' id='consumo100km' value='"+coche_viejo.getConsumo100km()+"' /> <br>");
+			out.println("<input name=\"confirmacion\" hidden=\"true\" type=\"text\"  value='true'></input>");
+			out.println("<input type='submit' id='submit' value='Modificar'>");
+		out.println("</form>");
+		out.println("<a href='index.html'><button/>Volver </a>");
+		out.println("</body>");
+		out.println("</html>");
+		}
 	}
 	
 
