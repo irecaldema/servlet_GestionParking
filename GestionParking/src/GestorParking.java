@@ -88,11 +88,10 @@ public class GestorParking extends HttpServlet {
 			Boolean confirmacion = Boolean.parseBoolean(request.getParameter("confirmacion"));
 			if (confirmacion!=true){
 				confirmacion=false;
-			}
-			Vehiculo sentenciado = new Coche();
-			sentenciado=ParkingVehiculos.buscarVehiculo(matricula);
-			response(response, "Seguro que quieres borrar el vehiculo?", sentenciado);
-			if(confirmacion=true){
+				Vehiculo sentenciado = new Coche();
+				sentenciado=ParkingVehiculos.buscarVehiculo(matricula);
+				response(response, "Seguro que quieres borrar el vehiculo?", sentenciado);
+			}else if(confirmacion==true){
 				ParkingVehiculos.borrarVehiculosFichero(matricula);
 				ParkingVehiculos.borrarVehiculo(matricula);
 				response(response, "Se ha borrado el vehiculo");
@@ -172,13 +171,13 @@ public class GestorParking extends HttpServlet {
 			throws IOException {
 			PrintWriter out = response.getWriter();
 			out.println("<html>");
-			out.println("<body>");
+			out.println("<body align='center'>");
 			out.println("<p>"+msg+"</p>");
-			out.println("<p>"+coche.getMarca()+"</p>");
-			out.println("<p>"+coche.getMatricula()+"</p>");
+			out.println("<p>matricula:"+coche.getMatricula()+" | marca del vehiculo: "+coche.getMarca()+"</p>");
 			out.println("<form name=\"borrar_vehiculo\" method=\"post\" action=\"Gestor\">");
 			out.println("<input name='gestion' hidden='true' type='text'  value='borrar_vehiculo'/>");
-			out.println("<input name=\"matricula\" hidden=\"true\" type=\"text\"  value=coche.getMatricula()></input>");
+			out.println("<input name=\"matricula\" hidden=\"true\" type=\"text\"  value="+coche.getMatricula()+"></input>");
+			out.println("<input name=\"confirmacion\" hidden=\"true\" type=\"text\"  value='true'></input>");
 			out.println("<input type='submit' id='submit' value='borrar'>");
 			out.println("</form>");
 			out.println("<a href='index.html'><button/>volver</a>");
