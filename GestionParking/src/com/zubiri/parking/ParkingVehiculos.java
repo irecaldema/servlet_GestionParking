@@ -126,6 +126,15 @@ public class ParkingVehiculos {
 		}
 	}
 	
+	public static void modificarVehiculoServlet(String matriculavieja, String matriculanueva, String marca, int num_ruedas, boolean motor, boolean automatico, int consumo) {
+		for(int i=0; i<vehiculos.size(); i++) {
+			if (vehiculos.get(i).getMatricula().equalsIgnoreCase(matriculavieja)) {
+				Coche coche = new Coche(num_ruedas,motor,marca,matriculanueva,automatico,consumo);
+				vehiculos.set(i, coche);
+			}
+		}
+	}
+	
 	// Borrar	
 	public static void borrarVehiculo(String matricula){
 		for (int b = 0; b < vehiculos.size(); b++) {

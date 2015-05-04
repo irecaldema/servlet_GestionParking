@@ -121,8 +121,9 @@ public class GestorParking extends HttpServlet {
 								response(response, "La matricula introducida ya existe");
 							}
 						} catch (ArrayIndexOutOfBoundsException e) {
-							//System.out.println("matricula: "+matriculavieja+" matri nueva: "+matriculanueva+" marca: "+marca+" ruedas: "+n_ruedas+" motor: "+motor+" automa: "+automatico+" consu: "+consumo);
+							System.out.println("matricula: "+matriculavieja+" matri nueva: "+matriculanueva+" marca: "+marca+" ruedas: "+n_ruedas+" motor: "+motor+" automa: "+automatico+" consu: "+consumo);
 							ParkingVehiculos.modificarVehiculosFicheroServlet(matriculavieja, matriculanueva, marca, n_ruedas, motor, automatico, consumo);
+							ParkingVehiculos.modificarVehiculoServlet(matriculavieja, matriculanueva, marca, n_ruedas, motor, automatico, consumo);
 							System.out.println("Vehículo modificado");
 							response(response, "Vehículo modificado");
 						}
@@ -211,7 +212,8 @@ public class GestorParking extends HttpServlet {
 		out.println("<body>");
 		out.println("<form name='modificar_vehiculo' method='post' action='Gestor'>");
 			out.println("<input name='gestion' hidden='true' type='text' value='modificar_vehiculo'/>");
-			out.println("Matricula a modificar: <input name='matriculavieja' type='text' value='"+coche_viejo.getMatricula()+"' /> <br>");
+			out.println("<input name='matriculavieja' type='text' value='"+coche_viejo.getMatricula()+"' hidden='true'/> <br>");
+			out.println("Matricula a modificar: <input type='text' value='"+coche_viejo.getMatricula()+"' disabled/> <br>");
 			out.println("Nueva matrícula: <input name='matriculanueva' type='text' id='matricula' value='matricula (4 numeros 3 letras)'/> <br>");
 			out.println("Marca: <input name='marca' type='text' id='marca' value='"+coche_viejo.getMarca()+"' /> <br>");
 			out.println("Número de ruedas: <input name='numruedas' type='text' id='numruedas' value='"+coche_viejo.getNumRuedas()+"' /> <br>");
